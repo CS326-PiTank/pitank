@@ -1,0 +1,4 @@
+IN1 - right tread backwards
+IN2 - right tread forwards
+IN3 - left tread forwards
+IN4 - left tread backwards
