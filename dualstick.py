@@ -4,7 +4,7 @@
     allows dualstick control of the pitank
 """
 
-__author__ = "Kurt Wietelmann, Henry Baldacci, and Sean Ebenmelu"
+__author__ = "Kurt Wietelmann (kaw57), Henry Baldacci (hb43), and Sean Ebenmelu (sce22)"
 
 import RPi.GPIO as GPIO
 import time

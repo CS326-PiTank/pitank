@@ -39,8 +39,8 @@ class Stream_publisher:
         self.topic = topic
         self.video_source = video_address
 
-        self.state = False  # whether camera is on or off
-        self.last_button = False  # keep track of last button state to avoid digital bouncing
+        self.state = False          # whether camera is on or off
+        self.last_button = False    # keep track of last button state to avoid digital bouncing
 
         self.cam = cv2.VideoCapture(self.video_source)
 
@@ -56,7 +56,7 @@ class Stream_publisher:
         while True:
             # if self.state:
             _, img = self.cam.read()
-            flippedimg = imutils.rotate(img, angle=180)
+            flippedimg = imutils.rotate(img, angle=180)     # flips the image upright
             img_str = cv2.imencode('.jpg', flippedimg)[1].tobytes()
 
             self.client.publish(self.topic, img_str, qos=0)
