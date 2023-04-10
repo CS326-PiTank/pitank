@@ -1,12 +1,24 @@
-# import time
+"""
+    dualstick.py
+
+    allows dualstick control of the pitank
+"""
+
+__author__ = "Kurt Wietelmann, Henry Baldacci, and Sean Ebenmelu"
+
 import RPi.GPIO as GPIO
+import time
 
 
+# GPIO Pins that were used in the Raspberry PI
 IN1 = 26
 IN2 = 19
 IN3 = 13
 IN4 = 6
-deadzone = 50
+
+DEADZONE = 50
+
+# GPIO Pins Setup
 
 GPIO.setmode(GPIO.BCM)  # changes pinout to BCM scheme
 GPIO.setup(IN1, GPIO.OUT)
@@ -16,6 +28,8 @@ GPIO.setup(IN4, GPIO.OUT)
 
 
 def pinCleanUp():
+    """ GPIO PIN CLEANUP METHOD """
+
     GPIO.output(IN1, 0)
     GPIO.output(IN2, 0)
     GPIO.output(IN3, 0)
@@ -25,48 +39,53 @@ def pinCleanUp():
 
 
 def pinTest():
+    """ Tests the PiTank Tread System """
+
     GPIO.output(IN1, 1)
     print("Running IN1 for 3 seconds...")
     GPIO.output(IN1, 0)
+    time.sleep(3000)
 
     GPIO.output(IN2, 1)
     print("Running IN2 for 3 seconds...")
     GPIO.output(IN2, 0)
+    time.sleep(3000)
 
     GPIO.output(IN3, 1)
     print("Running IN3 for 3 seconds...")
     GPIO.output(IN3, 0)
+    time.sleep(3000)
 
     GPIO.output(IN4, 1)
     print("Running IN4 for 3 seconds...")
     GPIO.output(IN4, 0)
-# pinTest()
-
+    time.sleep(3000)
 
 def statereader(leftstate, rightstate):
+    """ Reads the trigger response of the controller to determine current state """
 
-    # post left tread direction
-    if leftstate <= (-1 * deadzone):  # forward
+    # POST LEFT TREAD DIRECTION
+    if leftstate <= (-1 * DEADZONE):    # forward
         GPIO.output(IN3, 1)
         GPIO.output(IN4, 0)
 
-    elif leftstate >= deadzone:  # back
+    elif leftstate >= DEADZONE:         # back
         GPIO.output(IN3, 0)
         GPIO.output(IN4, 1)
 
-    else:  # let go of left stick
+    else:  # release of left stick
         GPIO.output(IN3, 0)
         GPIO.output(IN4, 0)
 
-    # post right tread direction
-    if rightstate <= (-1 * deadzone):  # forward
+    # POST RIGHT TREAD DIRECTION
+    if rightstate <= (-1 * DEADZONE):   # forward
         GPIO.output(IN1, 0)
         GPIO.output(IN2, 1)
 
-    elif rightstate >= deadzone:  # back
+    elif rightstate >= DEADZONE:        # back
         GPIO.output(IN1, 1)
         GPIO.output(IN2, 0)
 
-    else:  # let go of right stick
+    else:  # release of right stick
         GPIO.output(IN1, 0)
         GPIO.output(IN2, 0)

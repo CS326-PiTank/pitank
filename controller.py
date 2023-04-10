@@ -1,22 +1,28 @@
+"""
+controller.py
+
+driver code for the piTank
+
+Adapted from: https://gist.github.com/effedebe/6cae2a5849923fb373ab749594b9ed50
+"""
+
+___author___ = "Henry Baldacci (hb43), Kurt Wietelmann (kaw57), and Sean Ebenmelu (sce22)"
+___copyright__ = "Copyright 2018 Francois De Bue"
+
+
 from threading import Thread
 from inputs import get_gamepad
 import dualstick
 from Stream_publisher import Stream_publisher
 
-#  https://gist.github.com/effedebe/6cae2a5849923fb373ab749594b9ed50
-
-#  gamepad.py
-#
-#  Copyright 2018 Francois De Bue
-#
-#  This program show how work with game pad and a thread
-#  This was used to drive a robot with arduino
-
 
 class XPAD(Thread):				# def class typr thread
+    """
+        sdf
+    """
     def __init__(self):
         Thread.__init__(self)		# thread init class (don't forget this)
-        self.A = 0			# all vars of gamepad, set init val to 0
+        self.A = 0			        # all vars of gamepad, set init val to 0
         self.B = 0
         self.X = 0
         self.Y = 0
@@ -38,6 +44,8 @@ class XPAD(Thread):				# def class typr thread
         self.Stream = Stream_publisher("picar", video_address=0)
 
     def run(self):		# run is a default Thread function
+        """ run method constantly checks which button event is being triggered """
+
         while True:  # loop for ever
             for event in get_gamepad():  # check events of gamepads, if not event, all is stop
                 if event.ev_type == "Key":  # category of binary respond values
@@ -96,8 +104,8 @@ class XPAD(Thread):				# def class typr thread
 def main():
     ''' with gamepad thread, count continue all the time '''
 
-    gamePad = XPAD()  # creation thread joypad
-    count = 0		# count represent continuity of your code
+    gamePad = XPAD()    # creation thread joypad
+    count = 0		    # count represent continuity of your code
     gamePad.start() 	# start of gamepad thread, to read input of game pad (multitasking forever)
 
     while True:
@@ -112,8 +120,8 @@ def main():
             # print(count)
 
         except KeyboardInterrupt:
-            dualstick.pinCleanUp()
-            gamePad.join() 		# wait the end of joypad thread
+            dualstick.pinCleanUp()  # cleans up GPIO pins that are used in runtime
+            gamePad.join() 		    # wait the end of joypad thread
             print("Operation Done")
             exit(1)
 
